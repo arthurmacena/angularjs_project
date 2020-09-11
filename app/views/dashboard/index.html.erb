@@ -1,0 +1,98 @@
+<div class="container">
+  <div class="jumbotron">
+    <h1>Calendar of events</h1>
+  </div>
+  <div ng-controller="EventsCtrl">
+    <div id="form-card" class="card p-4">
+      <h4>Create Event</h4>
+      <div class="row">
+        <div class="col-md-12">
+          <form class="form-inline" ng-submit="addEvent()">
+            <div class="form-group">
+              <input type="text" class="form-control" name="name" placeholder="Name" ng-model="event.name" required />
+            </div>
+            <div class="form-group">
+              <input type="text" class="form-control" name="place" placeholder="Place" ng-model="event.place" required />
+            </div>
+            <div class="form-group">
+              <input type="text" class="form-control" name="description" placeholder="Description" ng-model="event.description" required/>
+            </div>
+            <div class="form-group">
+              <input type="text" class="form-control" name="event_date" placeholder="Event date" ng-model="event.event_date" onfocus="(this.type='date')" required/>
+            </div>
+            <button type="submit" class="btn btn-success">Add</button>
+          </form>
+        </div>
+      </div >
+    </div>
+    <div class="row">
+      <div class="col-md-10">
+        <input ng-change="filterEvents()" type="text" id="search" class="form-control" ng-model="search" placeholder="Seach for your event here..." />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <table class="table table-responsive-lg ">
+          <thead class= "thead-dark">
+            <tr>
+                <th ng-click="sortEvents('name', sorting.order)" ng-class="sorting.sort_by == 'name' ? 'text-underline' : ''">
+                Name
+                </th>
+                <th ng-click="sortEvents('place', sorting.order)" ng-class="sorting.sort_by == 'place' ? 'text-underline' : ''">
+                Place
+                
+                </th>
+                <th ng-click="sortEvents('description', sorting.order)" ng-class="sorting.sort_by == 'description' ? 'text-underline' :''" >
+                Description
+                </th>
+                <th ng-click="sortEvents('event_date', sorting.order)" ng-class="sorting.sort_by == 'event_date' ? 'text-underline' : ''">
+                Date
+                </th>
+                <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="event in events" ng-include="toggleForm(event)"></tr>
+            <script type="text/ng-template" id="form">
+                <td>
+                    <input ng-model="editing.name" type="text" class="form-control" name="name" />
+                </td>
+                <td>
+                    <input ng-model="editing.place" type="text" class="form-control" name="place" />
+                </td>
+                <td>
+                    <input ng-model="editing.description" type="text" class="form-control" name="description" />
+                </td>
+                <td>
+                    <input ng-model="editing.event_date" type="text" class="form-control" name="event_date" onfocus="(this.type='date')"/>
+                </td>
+                <td>
+                    <button ng-click="hideForm()" class="btn btn-default btn-xs">Cancel</button>
+                    <button ng-click="updateEvent($index)" class="btn btn-success btn-xs">Save</button>
+                </td>
+                </script>
+                <script type="text/ng-template" id="row">
+                <td>
+                    <span>{{event.name}}</span>
+                </td>
+                <td>
+                    <span>{{event.place}}</span>
+                </td>
+                <td>
+                    <span>{{event.description}}</span>
+                </td>
+                <td>
+                    <span>{{event.event_date | date:dateFormat}}</span>
+                </td>
+                <td>
+                    <button ng-click="editEvent(event)" class="btn btn-primary btn-xs">Edit</button>
+                    <button ng-click="destroyEvent(event, $index)" class="btn btn-danger btn-xs">Destroy</button>
+                </td>
+            </script>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
